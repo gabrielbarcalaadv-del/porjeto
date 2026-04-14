@@ -13,5 +13,9 @@ out/
 # Debug
 npm-debug.log*
 
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
 # OS files
 .DS_Store
