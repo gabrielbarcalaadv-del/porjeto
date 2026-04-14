@@ -12,8 +12,19 @@ import {
   Kanban,
   CalendarDays,
   ChevronRight,
+  Settings,
 } from "lucide-react";
 import clsx from "clsx";
+import { useStore } from "@/lib/store";
+
+function getInitials(nome: string) {
+  return nome
+    .split(" ")
+    .filter((w) => w.length > 2)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("");
+}
 
 const navItems = [
   { href: "/", icon: LayoutDashboard, label: "Dashboard" },
@@ -28,6 +39,7 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { userProfile } = useStore();
 
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-sidebar flex flex-col z-30">
@@ -73,16 +85,25 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="px-4 py-4 border-t border-white/10">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-            JP
+      <div className="px-3 py-3 border-t border-white/10">
+        <Link
+          href="/perfil"
+          className={clsx(
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group w-full",
+            pathname === "/perfil"
+              ? "bg-primary-700"
+              : "hover:bg-sidebar-hover"
+          )}
+        >
+          <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            {getInitials(userProfile.nome)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-xs font-medium truncate">Dr. João Paulo</p>
-            <p className="text-blue-400 text-xs truncate">OAB/SP 123456</p>
+            <p className="text-white text-xs font-medium truncate">{userProfile.nome}</p>
+            <p className="text-blue-400 text-xs truncate">{userProfile.oab}</p>
           </div>
-        </div>
+          <Settings size={14} className="text-blue-400 group-hover:text-white flex-shrink-0 transition-colors" />
+        </Link>
       </div>
     </aside>
   );

@@ -107,6 +107,16 @@ export interface Prazo {
   updatedAt: string;
 }
 
+export interface UserProfile {
+  nome: string;
+  oab: string;
+  email: string;
+  telefone: string;
+  especialidade: string;
+  escritorio: string;
+  endereco: string;
+}
+
 export type KanbanColuna =
   | "backlog"
   | "em_andamento"

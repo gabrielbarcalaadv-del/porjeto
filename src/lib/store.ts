@@ -8,6 +8,7 @@ import type {
   Procuracao,
   Prazo,
   KanbanTarefa,
+  UserProfile,
 } from "./types";
 
 function uid() {
@@ -17,6 +18,9 @@ function uid() {
 const now = () => new Date().toISOString();
 
 interface AppState {
+  userProfile: UserProfile;
+  updateUserProfile: (p: Partial<UserProfile>) => void;
+
   processos: Processo[];
   movimentacoes: Movimentacao[];
   honorarios: Honorario[];
@@ -55,6 +59,16 @@ interface AppState {
   deleteTarefa: (id: string) => void;
   moveTarefa: (id: string, coluna: KanbanTarefa["coluna"]) => void;
 }
+
+const defaultUserProfile: UserProfile = {
+  nome: "Dr. João Paulo Ferreira",
+  oab: "OAB/SP 123456",
+  email: "joaopaulo@jurisoffice.com.br",
+  telefone: "(11) 99999-0000",
+  especialidade: "Direito Civil e Trabalhista",
+  escritorio: "Ferreira & Associados Advocacia",
+  endereco: "Av. Paulista, 1000 - São Paulo/SP",
+};
 
 const sampleData = {
   processos: [
@@ -279,6 +293,10 @@ const sampleData = {
 export const useStore = create<AppState>()(
   persist(
     (set) => ({
+      userProfile: defaultUserProfile,
+      updateUserProfile: (p) =>
+        set((s) => ({ userProfile: { ...s.userProfile, ...p } })),
+
       ...sampleData,
 
       // Processos
